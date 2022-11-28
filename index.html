@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+</head>
+
+<body>
+  <h1>TODOアプリ</h1>
+  <div id="app">
+    <table>
+      <tr>
+        <td>タスク名：</td>
+        <td>
+          <input type="text" v-model="todo" />
+        </td>
+        <td>推定時間(分)：</td>
+        <td>
+          <input type="text" v-model="time" />
+        </td>
+      </tr>
+      <tr>
+        <td colspan="4">
+          <button v-on:click="addTodoList">追加</button>
+        </td>
+      </tr>
+    </table>
+      
+    <div class="todo">
+      <list-item v-bind:todo_list="list"></list-item>
+    </div>
+    
+  </div>
+</body>
+<script>
+
+  Vue.component('ListItem', {
+    template: `
+      <table>
+        <tr>
+          <th style="text-align:left;">タスク</th>
+          <th style="text-align:left;">推定時間(分)</th>
+        </tr>
+        <tr v-for="item in todo_list" v-bind:key="item.id">
+          <td style="width:200px;" nowrap>{{ item.text }}</td>
+          <td style="width:100px;" nowrap>{{ item.min }}分</td>
+        </tr>
+      </table>
+      `,
+    props: ['todo_list'],
+  });
+
+  new Vue({
+    el: "#app",
+    data () {
+      return {
+        todo:'',
+        time: '',
+        list: [],
+      }
+    },
+    methods: {
+      addTodoList() {
+        const nextId = this.list.length + 1;
+        const newTodo = { id: nextId, text: this.todo, min: this.time };
+        this.list.push(newTodo);
+      }
+    },
+  });
+</script>
+
+</html>
